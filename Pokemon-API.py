@@ -23,13 +23,34 @@ def PokeAPI_pokemon():
         print("Abilities:")
         
         for i in repository["abilities"]:
+            abilities = i["ability"]["name"]
+            abilityURL = "https://pokeapi.co/api/v2/ability/" + i["ability"]["name"]
+            responseAbility = r.request("GET", abilityURL)
+
+            if response.status_code == 200:
+                abilityRep = responseAbility.json()
+
+                for x in abilityRep["names"]:
+                    if x["language"]["name"] == "en":
+                        for z in abilityRep["effect_entries"]:
+                            if z["language"]["name"] == "en":
+                                print(x["name"], ": ", z["short_effect"])
+
+                        
+
+        """
+        for i in repository["abilities"]:
             abilities = i["ability"]['name']
             abilityURL = "https://pokeapi.co/api/v2/ability/" + i["ability"]["name"]
             responseAbility = r.request("GET", abilityURL)
             abilityRep = responseAbility.json()
-            abilityEffect = abilityRep['effect_entries'][1]['short_effect']
-
-            print(f'- {abilities}: {abilityEffect}')
+            
+            for ab in abilityRep["effect_entries"]:
+                if ab["language"]["name"] == "en":
+                    abilityEffect = ab['effect_entries']['short_effect']
+                    print(f'- {abilities}: {abilityEffect}')
+        """
+            
             #print(abilityRep['effect_entries'][1]['short_effect'])
 
         print("You want to search for another pokemon?")
